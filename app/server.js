@@ -12,6 +12,9 @@ import ejs from 'ejs';
 import path from 'path';
 import ErrorHandlers from './Config/ErrorHandlers';
 import Authentication from './Config/Passport';
+import databaseConnection from './Config/DatabaseConnection';
+import DatabaseService from '../vendor/DatabaseService';
+import User from './Models/User';
 
 //create instance of the app
 const app = express();
@@ -31,6 +34,20 @@ mongoose
   .then(() => console.log('MongoDB Connected'))
   .catch(err => console.log(err));
 
+//connect to mysql database
+const connection = databaseConnection({
+  db:{
+    dialect:'mysql',
+    name:'canal',
+    host:'localhost',
+    port:3306,
+    user:'root',
+    password:'123456',
+  }
+},null);
+
+const DBService = new DatabaseService(connection);
+DBService.loadModels(User);
 
 //set the view engine 
 app.set('view engine','ejs');

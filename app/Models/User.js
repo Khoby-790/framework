@@ -1,8 +1,19 @@
-import Model from '../../vendor/Model';
-import mongoose from 'mongoose';
+import BaseModel from '../../vendor/Model';
 
-class User extends Model{
-    
+export default class User extends BaseModel {
+    static registerHooks () {
+        this.beforeSave((user) => {
+            if (user.changed('password') && user.password) {
+                if (user.password.substr(0, 7) === 'bcrypt$') {
+                    throw new Error('Do not bcrypt passwords before setting them');
+                }
+
+                const hash = this.services.password.hash(user.password);
+
+                user.dataValues.password = `bcrypt$${hash}`;
+            }
+        });
+
+        return this;
+    }
 }
-
-export default User;
