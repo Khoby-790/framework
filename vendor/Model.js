@@ -2,14 +2,11 @@
 
 class Model {
 
-    constructor(object){
-        this.fillable = {}
-    }
+    // fillable = [];
 
     static create(obj){
-        this.fillable.push(obj);
-
-        return obj
+        console.log(this.name + " invoked");
+        //return obj
     }
 }
 
