@@ -31,10 +31,12 @@ mongoose
   .then(() => console.log('MongoDB Connected'))
   .catch(err => console.log(err));
 
+//models
+require('./Models/User');
 
 //set the view engine 
-app.set('view engine','ejs');
 app.engine('ejs', require('express-ejs-extend'));
+app.set('view engine','ejs');
 //set where to locate views folder
 app.set('views',path.join(__dirname + '/../resources/views'));
 
@@ -47,7 +49,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 
 //validates all requests
-// app.use(expressValidator());
+app.use(expressValidator());
 
 // Express session
 app.use(
