@@ -1,16 +1,36 @@
 import express from "express";
+import mongoose from 'mongoose';
+import passport from 'passport';
+import bodyParser from 'body-parser';
+import flash from 'connect-flash';
+import session from 'express-session';
+import expressValidator from 'express-validator';
 import webRouter from '../routes/web';
 import apiRouter from '../routes/api';
 import authRouter from '../routes/users';
 import ejs from 'ejs';
 import path from 'path';
 import ErrorHandlers from './Config/ErrorHandlers';
+import Authentication from './Config/Passport';
 
 //create instance of the app
 const app = express();
 
 // import environmental variables from our variables.env file
 require('dotenv').config({ path: 'variables.env' });
+
+// Passport Config
+const Auth = new Authentication(passport);
+
+// Connect to MongoDB
+mongoose
+  .connect(
+    process.env.DATABASE,
+    { useNewUrlParser: true }
+  )
+  .then(() => console.log('MongoDB Connected'))
+  .catch(err => console.log(err));
+
 
 //set the view engine 
 app.set('view engine','ejs');
@@ -21,9 +41,36 @@ app.set('views',path.join(__dirname + '/../resources/views'));
 //middleware parser
 app.use(express.json());
 
+// Takes the raw requests and turns them into usable properties on req.body
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+
+//validates all requests
+// app.use(expressValidator());
+
+// Express session
+app.use(
+  session({
+    secret: 'secret',
+    resave: true,
+    saveUninitialized: true
+  })
+);
+
+// Passport middleware
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Connect flash
+app.use(flash());
+
 // Global variables
 app.use(function(req, res, next) {
   res.locals.user = req.user || null;
+  res.locals.success_msg = req.flash('success_msg');
+  res.locals.error_msg = req.flash('error_msg');
+  res.locals.error = req.flash('error');
   next();
 });
 
