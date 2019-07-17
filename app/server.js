@@ -34,6 +34,10 @@ mongoose
   .then(() => console.log('MongoDB Connected'))
   .catch(err => console.log(err));
 
+<<<<<<< HEAD
+//models
+require('./Models/User');
+=======
 //connect to mysql database
 const connection = databaseConnection({
   db:{
@@ -48,10 +52,11 @@ const connection = databaseConnection({
 
 const DBService = new DatabaseService(connection);
 DBService.loadModels(User);
+>>>>>>> 242b2368f43d672bd574622b945d9d9eb9329923
 
 //set the view engine 
-app.set('view engine','ejs');
 app.engine('ejs', require('express-ejs-extend'));
+app.set('view engine','ejs');
 //set where to locate views folder
 app.set('views',path.join(__dirname + '/../resources/views'));
 
@@ -64,7 +69,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 
 //validates all requests
-// app.use(expressValidator());
+app.use(expressValidator());
 
 // Express session
 app.use(

@@ -1,22 +1,12 @@
-import mongoose from 'mongoose';
-import bcrypt from 'bcryptjs';
-import passport from 'passport';
-import crypto from 'crypto';
-import User from '../../Models/User';
 import Controller from '../../../vendor/Controller';
+import passport from 'passport';
 
 
 class LoginController extends Controller {
     static index(req, res){
         res.render('auth/login');
-    }
-
-    static login(){
-    	passport.authenticate('local',{
-    		failureRedirect:'/users/login',
-    		failureFlash:true
-    	})
-    }
+ 	}
+    	
 
     static rememberMe(req, res, next){
     	if (req.body.remember) {

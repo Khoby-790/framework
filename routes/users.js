@@ -1,5 +1,5 @@
 import {Router} from 'express';
-
+import passport from 'passport';
 import LoginController from '../app/Conttrollers/Auth/LoginController';
 import RegisterController from '../app/Conttrollers/Auth/RegisterController';
 import ErrorHandler from '../app/Config/ErrorHandlers';
@@ -9,14 +9,21 @@ const router = new Router();
 
 
 // routes
-router.get('/login',LoginController.index);
 
 //register
-router.get('/register', Middleware.ensureAuthenticated, RegisterController.index);
+router.get('/register', Middleware.forwardAuthenticated, RegisterController.index);
 router.post('/register', RegisterController.validateRegister, RegisterController.register);
-router.post('/login',LoginController.login, LoginController.rememberMe, LoginController.loginRedirect);
+
+//login
+router.get('/login',LoginController.index);
+router.post('/login', 
+		passport.authenticate('local',{
+    		failureRedirect:'/users/login',
+    		failureFlash:true
+    	}), 
+		LoginController.rememberMe, 
+		LoginController.loginRedirect
+		);
 router.get('/logout', LoginController.logout);
 
 export default router
-
-

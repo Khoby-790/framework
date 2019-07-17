@@ -1,6 +1,6 @@
+import passport from 'passport';
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
-import passport from 'passport';
 import crypto from 'crypto';
 import User from '../../Models/User';
 import Controller from '../../../vendor/Controller';
@@ -11,19 +11,8 @@ class RegisterController extends Controller{
     }
 
     static validateRegister(req, res, next){
-    	const {name, email, password, password2, isAdmin} = req.body;
-    	if(isAdmin == 'default'){
-    		let errors = [{
-    			location:'body',
-    			param:'isAdmin',
-    			msg:'Oops, All fields are required',
-    			value:isAdmin
-    		}];
-    		res.render('auth/register',{
-    			errors
-    		});
-    		return;
-    	}
+    	const {name, email, password, password2} = req.body;
+  
     	req.sanitizeBody('name');
 		req.checkBody('name','Name field cannot be empty').notEmpty();
 		req.checkBody('email','Email field cannot be empty').isEmail();
@@ -46,7 +35,7 @@ class RegisterController extends Controller{
     }
 
     static register(req, res, next){
-		const { name, email, password, password2, isAdmin } = req.body;
+		const { name, email, password, password2 } = req.body;
 		User.findOne({email})
 		.then(user => {
 			if(user){
@@ -60,8 +49,7 @@ class RegisterController extends Controller{
 				const newUser = new User({
 					name,
 					email,
-					password,
-					isAdmin
+					password
 				});
 
 				bcrypt.genSalt(10,(err,salt)=>{
