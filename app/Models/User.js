@@ -1,6 +1,6 @@
 import BaseModel from '../../vendor/Model';
-
-export default class User extends BaseModel {
+import UserSchema from '../Schemas/UserSchema';
+class User extends BaseModel {
     static registerHooks () {
         this.beforeSave((user) => {
             if (user.changed('password') && user.password) {
@@ -17,3 +17,8 @@ export default class User extends BaseModel {
         return this;
     }
 }
+
+// User.init(UserSchema.User.attributes,)
+
+
+export default User;
