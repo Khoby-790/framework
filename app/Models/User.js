@@ -1,43 +1,19 @@
-// import Model from '../../vendor/Model';
-// import mongoose from 'mongoose';
+import BaseModel from '../../vendor/Model';
 
-// class User extends Model{
-    
-// }
+export default class User extends BaseModel {
+    static registerHooks () {
+        this.beforeSave((user) => {
+            if (user.changed('password') && user.password) {
+                if (user.password.substr(0, 7) === 'bcrypt$') {
+                    throw new Error('Do not bcrypt passwords before setting them');
+                }
 
-// export default User;
+                const hash = this.services.password.hash(user.password);
 
-const mongoose = require('mongoose');
+                user.dataValues.password = `bcrypt$${hash}`;
+            }
+        });
 
-const UserSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    trim: true,
-    required:true
-  },
-  email: {
-    type: String,
-    trim: true,
-    required:true
-  },
-  password: {
-    type: String
-  },
-  resetPasswordToken: String,
-  resetPasswordExpires:Date,
-  created_at: {
-    type: Date,
-    default: Date.now
-  },
-  updated_at:{
-    type:Date,
-    default:Date.now
-  }
-},{
-  toJSON:{virtuals:true},
-  toObject:{virtuals:true}
-});
-
-const User = mongoose.model('User', UserSchema);
-
-module.exports = User;
+        return this;
+    }
+}
