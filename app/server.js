@@ -4,7 +4,7 @@ import passport from 'passport';
 import bodyParser from 'body-parser';
 import flash from 'connect-flash';
 import session from 'express-session';
-import {expressValidator} from 'express-validator';
+import expressValidator from 'express-validator';
 import webRouter from '../routes/web';
 import apiRouter from '../routes/api';
 import authRouter from '../routes/users';
@@ -12,7 +12,7 @@ import ejs from 'ejs';
 import path from 'path';
 import ErrorHandlers from './Config/ErrorHandlers';
 import Authentication from './Config/Passport';
-require('../app/Config/DatabaseConnection');
+
 
 
 //create instance of the app
@@ -24,34 +24,14 @@ require('dotenv').config({ path: 'variables.env' });
 // Passport Config
 const Auth = new Authentication(passport);
 
-// Connect to MongoDB
-// mongoose
-//   .connect(
-//     process.env.DATABASE,
-//     { useNewUrlParser: true }
-//   )
-//   .then(() => console.log('MongoDB Connected'))
-//   .catch(err => console.log(err));
-
-  // databaseConnection({
-  //   db:{
-  //     name: '',
-  //     password:'',
-  //     dialect:'mysql',
-  //     port:3306,
-  //     user:'root',
-  //     host:'localhost'
-  //   }
-  // },null);
-
-//models
-//require('../vendor/DatabaseService');
 
 
 
 //set the view engine 
 app.engine('ejs', require('express-ejs-extend'));
 app.set('view engine','ejs');
+
+
 //set where to locate views folder
 app.set('views',path.join(__dirname + '/../resources/views'));
 
@@ -64,7 +44,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 
 //validates all requests
-//app.use(expressValidator());
+app.use(expressValidator());
 
 // Express session
 app.use(
@@ -115,6 +95,10 @@ if (process.env.NODE_ENV === 'development') {
 
 // production error handler
 app.use(ErrorHandlers.productionErrors);
+
+
+//start the mysql server
+require('../app/Config/DatabaseConnection');
 
 
 const PORT = process.env.PORT || 5000;

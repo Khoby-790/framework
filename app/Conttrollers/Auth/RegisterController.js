@@ -38,9 +38,9 @@ class RegisterController extends Controller{
 
     static register(req, res, next){
 		const { name, email, password, password2 } = req.body;
-		User.findOne({email})
+		User.findOne({email: email})
 		.then(user => {
-			if(user){
+			if(user != null){
 				let errors = [];
 				errors.push({msg:'Email already exists'});
 				res.render('auth/register',{
@@ -48,25 +48,37 @@ class RegisterController extends Controller{
 				});
 				return next(null);
 			}else{
-				const newUser = new User.create({
-					name,
-					email,
-					password
-				});
 
-				bcrypt.genSalt(10,(err,salt)=>{
-					bcrypt.hash(newUser.password, salt, (err, hash)=>{
-						if(err) throw err;
-						newUser.password = hash;
-						newUser
-							.save()
-							.then(user => {
+				User.create({name,email,password}).then(user =>{
+					bcrypt.genSalt(10,(err, salt)=>{
+						bcrypt.hash(user.password,salt,(err,hash)=>{
+							if (err) throw err
+							user.update({password: hash}).then(()=>{
 								req.flash('success_msg','You are now registered and can login');
 								res.redirect('/users/login');
-							})
-							.catch(err => console.log(err));
-					});		
-				});
+							}).catch(err => console.log(err));
+						})
+					})
+				})
+				// const newUser = new User.create({
+				// 	name,
+				// 	email,
+				// 	password
+				// });
+
+				// bcrypt.genSalt(10,(err,salt)=>{
+				// 	bcrypt.hash(newUser.password, salt, (err, hash)=>{
+				// 		if(err) throw err;
+				// 		newUser.password = hash;
+				// 		newUser
+				// 			.update({password: hash})
+				// 			.then(user => {
+				// 				req.flash('success_msg','You are now registered and can login');
+				// 				res.redirect('/users/login');
+				// 			})
+				// 			.catch(err => console.log(err));
+				// 	});		
+				// });
 			}
 		});
     }

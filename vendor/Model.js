@@ -13,4 +13,6 @@ export default class BaseModel extends InterFaceBaseModel {
     static create(obj){
         return this.create(obj);
     }
+
+    
 }

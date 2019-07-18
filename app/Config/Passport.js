@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
-import User from '../Models/User';
+import Models from '../Models';
+const User = Models.User;
 const LocalStragtegy = require('passport-local').Strategy;
 
 class Auth {
@@ -34,7 +35,7 @@ class Auth {
 	  });
 
 	  passport.deserializeUser(function(id, done){
-	  	User.findById(id, function(err, user){
+	  	User.findByPk(id).then((err, user)=>{
 	  		done(err, user);
 	  	});
 	  });
