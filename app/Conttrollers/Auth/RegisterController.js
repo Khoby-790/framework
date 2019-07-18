@@ -2,8 +2,10 @@ import passport from 'passport';
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
-import User from '../../Models/User';
+import models from '../../Models/index';
 import Controller from '../../../vendor/Controller';
+
+const User = models.User
 
 class RegisterController extends Controller{
     static index(req, res){
@@ -46,7 +48,7 @@ class RegisterController extends Controller{
 				});
 				return next(null);
 			}else{
-				const newUser = new User({
+				const newUser = new User.create({
 					name,
 					email,
 					password

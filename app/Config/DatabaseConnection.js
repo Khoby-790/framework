@@ -1,31 +1,21 @@
 import { inspect } from 'util';
 import Sequelize from 'sequelize';
+import User from '../Models/user';
 
-export default function DatabaseConnection (config, logger) {
-    const {
-        dialect,
-        name,
-        host,
-        port,
-        user,
-        password,
-    } = config.db;
-
-    const logging = (...args) => {
-        args = args.map((arg) => {
-            return inspect(arg);
-        });
-
-        logger.debug(...args);
-    };
-
-    return new Sequelize(name, user, password, {
-        host,
-        dialect,
-        port,
-        logging,
-        define: {
-            underscored: true,
-        },
+// Option 1: Passing parameters separately
+const sequelize = new Sequelize('node', 'root', '', {
+    host: 'localhost',
+    dialect: 'mysql'
+  });
+  
+  sequelize
+    .authenticate()
+    .then(() => {
+        User(sequelize,Sequelize);
+      console.log('Connection has been established successfully.');
+    })
+    .catch(err => {
+      console.error('Unable to connect to the database:', err);
     });
-}
+
+ module.exports = sequelize   

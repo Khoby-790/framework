@@ -1,53 +1,16 @@
 import Sequelize from 'sequelize';
-import _ from 'lodash';
+const InterFaceBaseModel = Sequelize.Model;
 
-export default class BaseModel extends Sequelize.Model {
-    static init (definition, services) {
-        const sequelize = services.db.connection;
-
-        this.$relations = definition.relations || {};
-
-        this.services = services;
-        this.prototype.services = services;
-        const {options} = definition
-        return super.init(definition.attributes, {
-            options,
-            sequelize,
-        });
+export default class BaseModel extends InterFaceBaseModel {
+    static init(sequelize){
+        return super.init(this.$attributes,{sequelize});
     }
 
-    static associate () {
-        const toRelName = (string) => {
-            const name = _.kebabCase(string);
-
-            return name.charAt(0).toUpperCase() + name.slice(1);
-        };
-
-        if (typeof this.$relations !== 'object' || this.$relations === null) {
-            return;
-        }
-
-        Object.keys(this.$relations).forEach((relationshipType) => {
-            const relationshipDefinitions = this.$relations[relationshipType];
-
-            Object.keys(relationshipDefinitions).forEach((relationshipTarget) => {
-                let relationshipTargetDefinitions = relationshipDefinitions[relationshipTarget];
-
-                if (!Array.isArray(relationshipTargetDefinitions)) {
-                    relationshipTargetDefinitions = [relationshipTargetDefinitions];
-                }
-
-                relationshipTargetDefinitions.forEach((relationshipDefinition) => {
-                    const relationshipName = toRelName(relationshipDefinition.as || relationshipTarget);
-                    const targetModel = this.sequelize.models[relationshipTarget];
-
-                    this[relationshipName] = this[relationshipType](targetModel, relationshipDefinition);
-                });
-            });
-        });
+    static associate(models) {
+        this.myAssociation = this.belongsTo(models.OtherModel);
     }
 
-    static registerHooks () {
-        return this;
+    static create(obj){
+        return this.create(obj);
     }
 }

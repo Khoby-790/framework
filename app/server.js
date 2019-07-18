@@ -4,7 +4,7 @@ import passport from 'passport';
 import bodyParser from 'body-parser';
 import flash from 'connect-flash';
 import session from 'express-session';
-import expressValidator from 'express-validator';
+import {expressValidator} from 'express-validator';
 import webRouter from '../routes/web';
 import apiRouter from '../routes/api';
 import authRouter from '../routes/users';
@@ -12,9 +12,8 @@ import ejs from 'ejs';
 import path from 'path';
 import ErrorHandlers from './Config/ErrorHandlers';
 import Authentication from './Config/Passport';
-import databaseConnection from './Config/DatabaseConnection';
-import DatabaseService from '../vendor/DatabaseService';
-import User from './Models/User';
+require('../app/Config/DatabaseConnection');
+
 
 //create instance of the app
 const app = express();
@@ -26,33 +25,29 @@ require('dotenv').config({ path: 'variables.env' });
 const Auth = new Authentication(passport);
 
 // Connect to MongoDB
-mongoose
-  .connect(
-    process.env.DATABASE,
-    { useNewUrlParser: true }
-  )
-  .then(() => console.log('MongoDB Connected'))
-  .catch(err => console.log(err));
+// mongoose
+//   .connect(
+//     process.env.DATABASE,
+//     { useNewUrlParser: true }
+//   )
+//   .then(() => console.log('MongoDB Connected'))
+//   .catch(err => console.log(err));
 
-<<<<<<< HEAD
+  // databaseConnection({
+  //   db:{
+  //     name: '',
+  //     password:'',
+  //     dialect:'mysql',
+  //     port:3306,
+  //     user:'root',
+  //     host:'localhost'
+  //   }
+  // },null);
+
 //models
-require('./Models/User');
-=======
-//connect to mysql database
-const connection = databaseConnection({
-  db:{
-    dialect:'mysql',
-    name:'canal',
-    host:'localhost',
-    port:3306,
-    user:'root',
-    password:'123456',
-  }
-},null);
+//require('../vendor/DatabaseService');
 
-const DBService = new DatabaseService(connection);
-DBService.loadModels(User);
->>>>>>> 242b2368f43d672bd574622b945d9d9eb9329923
+
 
 //set the view engine 
 app.engine('ejs', require('express-ejs-extend'));
@@ -69,7 +64,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 
 //validates all requests
-app.use(expressValidator());
+//app.use(expressValidator());
 
 // Express session
 app.use(
