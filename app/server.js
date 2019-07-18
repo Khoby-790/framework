@@ -98,7 +98,7 @@ app.use(ErrorHandlers.productionErrors);
 
 
 //start the mysql server
-require('../app/Config/DatabaseConnection');
+// require('../app/Config/DatabaseConnection');
 
 
 const PORT = process.env.PORT || 5000;
