@@ -84,6 +84,7 @@ app.use('/users',authRouter);
 
 // serves up static files from the public folder. Anything in public/ will just be served up as the file it is
 app.use(express.static(path.join(__dirname, '/../public')));
+console.log(__dirname + '/../public');
 
 
 // If that above routes didnt work, we 404 them and forward to error handler
@@ -103,13 +104,7 @@ app.use(ErrorHandlers.productionErrors);
 // require('../app/Config/DatabaseConnection');
 
 
-const PORT = process.env.PORT || 5000;
-
-//now listen on the port for requests
-app.listen(PORT,(error)=>{
-    if(error) throw error;
-    console.log(`Server running and receiving request on port: ${PORT}`)
-});
 
 
-export default app;
+
+module.exports = app;
