@@ -2,6 +2,7 @@ import express from "express";
 import mongoose from 'mongoose';
 import passport from 'passport';
 import bodyParser from 'body-parser';
+const busboyBodyParser = require('busboy-body-parser');
 import flash from 'connect-flash';
 import session from 'express-session';
 import expressValidator from 'express-validator';
@@ -22,7 +23,7 @@ const app = express();
 require('dotenv').config({ path: 'variables.env' });
 
 // Passport Config
-const Auth = new Authentication(passport);
+require('./Config/Passport')(passport);
 
 
 
@@ -44,7 +45,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 
 //validates all requests
-app.use(expressValidator());
+app.use(busboyBodyParser());
 
 // Express session
 app.use(
@@ -82,7 +83,8 @@ app.use('/api',apiRouter);
 app.use('/users',authRouter);
 
 //set static folder
-app.use('/static',express.static('../public'));
+//static files
+app.use(express.static(path.join(__dirname, '/../public')));
 
 // If that above routes didnt work, we 404 them and forward to error handler
 app.use(ErrorHandlers.notFound);
