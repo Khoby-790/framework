@@ -82,9 +82,9 @@ app.use('/api',apiRouter);
 //bring in auth routes
 app.use('/users',authRouter);
 
-//set static folder
-//static files
+// serves up static files from the public folder. Anything in public/ will just be served up as the file it is
 app.use(express.static(path.join(__dirname, '/../public')));
+
 
 // If that above routes didnt work, we 404 them and forward to error handler
 app.use(ErrorHandlers.notFound);
