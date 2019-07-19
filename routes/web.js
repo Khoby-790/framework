@@ -5,7 +5,7 @@ import Middleware from '../app/Config/middleware';
 
 const Route = express.Router();
 
-Route.get('/',Middleware.ensureAuthenticated,HomeController.index);
+Route.get('/',HomeController.index);
 Route.post('/try',HomeController.create);
 
 export default Route

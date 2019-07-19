@@ -3,7 +3,9 @@ const User = models.User
 
 class HomeController {
     static index(req, res){
-        res.render('index');
+        res.render('index',{
+        	title:'Home'
+        });
     }
 
     static create(req, res){
