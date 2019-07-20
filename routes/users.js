@@ -16,14 +16,22 @@ router.post('/register', RegisterController.validateRegister, RegisterController
 
 //login
 router.get('/login',LoginController.index);
-router.post('/login', 
-		passport.authenticate('local',{
-    		failureRedirect:'/users/login',
-    		failureFlash:true
-    	}), 
-		LoginController.rememberMe, 
-		LoginController.loginRedirect
-		);
+
+router.post('/login',(req, res, next) => {
+	passport.authenticate('local', {
+	  successRedirect: '/',
+	  failureRedirect: '/users/login',
+	  failureFlash: true
+	})(req, res, next)});
+// router.post('/login', 
+// 		passport.authenticate('local',{
+//     		failureRedirect:'/users/login',
+// 			failureFlash:true,
+// 			successRedirect:'/'   
+// 		})(req, res, next), 
+// 		LoginController.rememberMe, 
+// 		LoginController.loginRedirect
+// 		);
 router.get('/logout', LoginController.logout);
 
 export default router

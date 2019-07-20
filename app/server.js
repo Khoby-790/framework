@@ -18,6 +18,7 @@ import Authentication from './Config/Passport';
 
 //create instance of the app
 const app = express();
+app.use(express.static('public'))
 
 // import environmental variables from our variables.env file
 require('dotenv').config({ path: 'variables.env' });
@@ -25,16 +26,16 @@ require('dotenv').config({ path: 'variables.env' });
 // Passport Config
 require('./Config/Passport')(passport);
 
-
+// const Auth = new Authentication(passport);
 
 
 //set the view engine 
+app.set('views','resources/views');
 app.engine('ejs', require('express-ejs-extend'));
 app.set('view engine','ejs');
 
 
 //set where to locate views folder
-app.set('views',path.join(__dirname + '/../resources/views'));
 
 //middleware parser
 app.use(express.json());
@@ -74,7 +75,7 @@ app.use(function(req, res, next) {
 
 
 //bring in web routes
-app.use("/",webRouter);
+app.use('/',webRouter);
 
 //bring in api routes
 app.use('/api',apiRouter);
@@ -83,8 +84,8 @@ app.use('/api',apiRouter);
 app.use('/users',authRouter);
 
 // serves up static files from the public folder. Anything in public/ will just be served up as the file it is
-app.use(express.static(path.join(__dirname, '/../public')));
-console.log(__dirname + '/../public');
+// app.use(express.static('public'));
+// console.log(path.join(path.dirname(__dirname)) + '/public');
 
 
 // If that above routes didnt work, we 404 them and forward to error handler
@@ -107,4 +108,14 @@ app.use(ErrorHandlers.productionErrors);
 
 
 
-module.exports = app;
+// module.exports = app;
+
+const PORT = process.env.PORT || 5000;
+
+
+
+//now listen on the port for requests
+app.listen(PORT,(error)=>{
+    if(error) throw error;
+    console.log(`Server running and receiving request on port: ${PORT}`)
+});

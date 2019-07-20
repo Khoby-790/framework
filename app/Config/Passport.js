@@ -9,24 +9,29 @@ module.exports = function(passport){
 		new LocalStragtegy({usernameField:'email'},(email, password, done) => {
 			//Match User
 			User.findOne({
-				email:email
+				where: {
+					email:email
+				}
 			})
 			.then(user => {
 				if(!user){
+					console.log("user does not exist")
 					return done(null, false, {message:'That email is not registered'});
 				}
 
 			  // Match password
-			  console.log(user.dataValues);
+			  console.log(user);
 			  bcrypt.compare(password, user.password, (err, isMatch) => {
 				  if (err) throw err;
 				  if(isMatch){
-					  return done(null, user.dataValues);
+					  
+					  return done(null, user);
 				  }else{
+					console.log("authenticated");
 					  return done(null,false, {message: 'Password incorrect'});
 				  }
 			  });
-			});
+			}).catch();
 		})
 	);
 
@@ -36,7 +41,11 @@ module.exports = function(passport){
 
 	passport.deserializeUser(function(id, done){
 		User.findByPk(id).then((err, user)=>{
-			done(err, user);
+			if(err){
+				done(err,null);
+			}else{
+				done(null, user);
+			}
 		});
 	});
 }
