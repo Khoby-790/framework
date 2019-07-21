@@ -8,6 +8,9 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      UserType:{
+        type: Sequelize.STRING
+      },
       name: {
         type: Sequelize.STRING
       },
@@ -24,6 +27,10 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
+      },
+      StudentId:{
+        allowNull: true,
+        type: Sequelize.INTEGER
       }
     });
   },

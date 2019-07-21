@@ -43,7 +43,7 @@ app.use(express.json());
 // Takes the raw requests and turns them into usable properties on req.body
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
+app.use(expressValidator());
 
 //validates all requests
 app.use(busboyBodyParser());

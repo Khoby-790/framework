@@ -15,8 +15,7 @@ module.exports = function(passport){
 			})
 			.then(user => {
 				if(!user){
-					console.log("user does not exist")
-					return done(null, false, {message:'That email is not registered'});
+					return done(null, false, { message:'That email is not registered' });
 				}
 
 			  // Match password
@@ -28,10 +27,10 @@ module.exports = function(passport){
 					  return done(null, user);
 				  }else{
 					console.log("authenticated");
-					  return done(null,false, {message: 'Password incorrect'});
+					  return done(null,false, { message: 'Password incorrect' });
 				  }
 			  });
-			}).catch();
+			}).catch(err => { throw err });
 		})
 	);
 
@@ -40,11 +39,12 @@ module.exports = function(passport){
 	});
 
 	passport.deserializeUser(function(id, done){
-		User.findByPk(id).then((err, user)=>{
-			if(err){
-				done(err,null);
-			}else{
+		User.findByPk(id).then((user)=>{
+			
+			if(user){
 				done(null, user);
+			}else{
+				done(err,null);
 			}
 		});
 	});

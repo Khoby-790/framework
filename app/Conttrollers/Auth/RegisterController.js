@@ -37,8 +37,10 @@ class RegisterController extends Controller{
     }
 
     static register(req, res, next){
-		const { name, email, password, password2 } = req.body;
-		User.findOne({email: email})
+		const { name, email, password, password2, UserType } = req.body;
+		User.findOne({where: {
+			email:email
+		}})
 		.then(user => {
 			if(user != null){
 				let errors = [];
@@ -49,7 +51,7 @@ class RegisterController extends Controller{
 				return next(null);
 			}else{
 
-				User.create({name,email,password}).then(user =>{
+				User.create({name,email,password,UserType}).then(user =>{
 					bcrypt.genSalt(10,(err, salt)=>{
 						bcrypt.hash(user.password,salt,(err,hash)=>{
 							if (err) throw err
