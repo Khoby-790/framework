@@ -1,0 +1,46 @@
+<%- extend('../../layout/index') %>
+
+<div class="dashboard-content-one">
+<!-- Breadcubs Area Start Here -->
+	<div class="breadcrumbs-area">
+		<div >
+	        <h3>Students</h3>
+	        <ul>
+	            <li>
+	                <a href="/">Home</a>
+	            </li>
+	            <li>Drop Excel Sheet Here</li>
+	        </ul>
+	    </div>
+	    
+	</div>
+	<!-- Breadcubs Area End Here -->
+	<!-- Admit Form Area Start Here -->
+	<div class="card height-auto">
+	    <div class="card-body">
+	        <div class="heading-layout1">
+	            <div class="item-title">
+	                <h3>Add New Students</h3>
+	            </div>
+	            <div class="dropdown">
+	                <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+	                    aria-expanded="false">...</a>
+
+	                <div class="dropdown-menu dropdown-menu-right">
+	                    
+	                    <a class="dropdown-item" href="#"><i
+	                            class="fas fa-redo-alt text-orange-peel"></i>Refresh</a>
+	                </div>
+	            </div>
+	        </div>
+	        <form class="new-added-form dropzone" method="POST" enctype="multipart/form-data" action="/student/add_parent">
+	 			<div class="dz-message">
+                    <div class="drag-icon-cph"> <i class="material-icons">touch_app</i> </div>
+                    <h3>Drop files here or click to upload.</h3>
+                    <em>(This is just a demo dropzone. Selected files are <strong>not</strong> actually uploaded.)</em> </div>
+                <div class="fallback">
+                    <input name="file" type="file" multiple />
+                </div>
+	        </form>
+    </div>
+</div>
