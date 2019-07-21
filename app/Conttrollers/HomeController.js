@@ -13,6 +13,25 @@ class HomeController {
             res.json({body: user})
         })
     }
+
+    static add_student(req, res){
+        res.render('School/Student/add_student',{
+            title:'Add Student'
+        })
+    }
+
+    static add_students_from_file(req, res){
+        res.render('School/Student/add_students_from_file',{
+            title:'Add Students'
+        })
+    }
+
+    static add_student_parent(req, res){
+        res.render('School/Student/add_parent',{
+            title:"Add Student's Parent"
+        })
+    }
+
 }
 
 
