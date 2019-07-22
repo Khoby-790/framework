@@ -33,13 +33,14 @@
 	                </div>
 	            </div>
 	        </div>
-	        <form class="new-added-form dropzone" method="POST" enctype="multipart/form-data" action="/student/add_parent">
+	        <form class="new-added-form dropzone border-none" style="background-color:#f2f2f2; border:none;" method="POST" enctype="multipart/form-data" action="/student/add_parent">
 	 			<div class="dz-message">
-                    <div class="drag-icon-cph"> <i class="material-icons">touch_app</i> </div>
+                    <div class="drag-icon-cph"> <i class="fa fa-file-excel fa-1"></i> </div>
                     <h3>Drop files here or click to upload.</h3>
-                    <em>(This is just a demo dropzone. Selected files are <strong>not</strong> actually uploaded.)</em> </div>
-                <div class="fallback">
-                    <input name="file" type="file" name="students_file" multiple />
+                    <em>(The preffered file type is <strong>Excel</strong> File)</em> 
+                </div>
+                <div class="fallback" >
+                    <input name="students_file" type="file" multiple />
                 </div>
 	        </form>
     </div>
