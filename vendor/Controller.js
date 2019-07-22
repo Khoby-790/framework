@@ -1,15 +1,28 @@
 import bcrypt from 'bcryptjs';
-import { body } from 'express-validator/check';
+const readXlsxFile = require('read-excel-file/node');
 
 class Controller {
  
-    hash(word){
+   static hash(word){
+       let newHash;
         bcrypt.genSalt(10,(err,salt)=>{
             bcrypt.hash(word,salt,(err,hash)=>{
                 if(err) throw err;
-                return hash;
-            }).catch(err => console.log(err));
+                newHash = hash;
+            });
         });
+
+        return newHash;
+    }
+
+    static getRowsFromFile(filepath){
+        let dataRows = [];
+        readXlsxFile(filepath).then((rows) => {
+            rows.shift();
+            dataRows = rows;
+        })
+
+        return dataRows;
     }
 
 }

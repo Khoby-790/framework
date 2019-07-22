@@ -1,11 +1,15 @@
 import models  from '../Models/index';
-const User = models.User
+const User = models.User;
+const Student = models.Student;
 
 class HomeController {
     static index(req, res){
-        res.render('index',{
-        	title:'Home'
-        });
+        Student.findAll().then(users =>{
+            res.render('index',{
+                title:'Home',
+                students: users
+            });
+        })
     }
 
     static create(req, res){

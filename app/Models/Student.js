@@ -1,20 +1,53 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const Student = sequelize.define('Student', {
-    id: {
-        type: DataTypes.STRING,
-        primaryKey: true,
+    firstName: {
+      type: DataTypes.STRING
     },
-    sex: DataTypes.STRING,
-    dob: DataTypes.DATE,
-    contact: DataTypes.STRING,
-    address: DataTypes.STRING,
-    postal_address: DataTypes.STRING,
+    lastName: {
+      type: DataTypes.STRING
+    },
+    gender:{
+        type: DataTypes.STRING
+    },
+    dob:{
+      type: DataTypes.DATE
+    },
+    roll:{
+      type: DataTypes.INTEGER
+    },
+    blood_group:{
+      type: DataTypes.STRING
+    },
+    religion:{
+      type: DataTypes.STRING
+    },
+    class:{
+      type: DataTypes.STRING
+    },
+    section:{
+      type: DataTypes.STRING
+    },
+    admission_id:{
+      type: DataTypes.STRING
+    },
+    short_bio:{
+      type: DataTypes.STRING
+    },
+    contact: {
+      type: DataTypes.STRING
+    },
+    user_id: {
+      type: DataTypes.INTEGER
+    },
+    student_avatar:{
+      type: DataTypes.STRING
+    }
   }, {});
   Student.associate = function(models) {
     // associations can be defined here
     models.Student.hasOne(models.StudentParent);
-    models.Student.belongsTo(models.User);
+    // models.Student.belongsTo(models.User);
   };
   return Student;
 };
